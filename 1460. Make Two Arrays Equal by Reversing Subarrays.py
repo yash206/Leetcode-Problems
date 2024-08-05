@@ -4,6 +4,10 @@ You are given two integer arrays of equal length target and arr. In one step, yo
 Return true if you can make arr equal to target or false otherwise.
 '''
 
+'''
+Difficulty - Easy
+'''
+
 
 class Solution:
     def canBeEqual(self, target: List[int], arr: List[int]) -> bool:
@@ -26,3 +30,8 @@ class Solution:
             if arr_freq[key] != value:
                 return False
         return True
+
+
+'''
+Time Complexity - O(n)
+'''
