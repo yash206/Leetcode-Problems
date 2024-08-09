@@ -44,5 +44,5 @@ class Solution:
 
 
 '''
-Time Complexity - O(m*n)
+Time Complexity - O(rows * cols)
 '''
