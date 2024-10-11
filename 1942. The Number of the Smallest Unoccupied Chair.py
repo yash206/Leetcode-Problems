@@ -13,30 +13,35 @@ Difficulty - Medium
 
 
 import heapq
-
 class Solution:
-    def smallestChair(self, times, targetFriend):
-        events = []
-        for i, (arrival, departure) in enumerate(times):
-            events.append((arrival, 0, i))  # arrival event
-            events.append((departure, 1, i))  # departure event
+    def smallestChair(self, times: List[List[int]], targetFriend: int) -> int:
         
-        events.sort()  # Sort by time
-        available_chairs = []
+        openChairs, timeHeap = [], []
+        output, startTime = 0, 0
+        
+        # populate minHeap with all posible chairs open
         for i in range(len(times)):
-            heapq.heappush(available_chairs, i)
+            if i == targetFriend:
+                startTime = times[i][0]
+            heapq.heappush(openChairs, i)
         
-        friend_to_chair = {}
+        times.sort(key=lambda x : x[0]) # sort by arrival time
         
-        for time, event_type, friend_id in events:
-            if event_type == 0:  # arrival
-                chair = heapq.heappop(available_chairs)
-                friend_to_chair[friend_id] = chair
-                if friend_id == targetFriend:
-                    return chair
-            else:  # departure
-                chair = friend_to_chair[friend_id]
-                heapq.heappush(available_chairs, chair)
+        for i, timeObj in enumerate(times):
+
+            arrival, leaving = timeObj
+            # if our new arrival time is greater than any previous leaving time, 
+            # pop our timeHeap and push occupied chair # to openChairs
+            while len(timeHeap) and arrival >= timeHeap[0][0]:
+                oldTime, chair = heapq.heappop(timeHeap)
+                heapq.heappush(openChairs, chair)
+            
+            if startTime == arrival:
+                return heapq.heappop(openChairs) # return next open chair
+            
+            heapq.heappush(timeHeap, (leaving, heapq.heappop(openChairs)))
+            
+        return -1
 
 
 '''
